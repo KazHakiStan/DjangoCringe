@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if message %}
+
+        {% for text in message %}
+
+            {% if text.sender == request.user %}
+                <div class="alert alert-primary" role="alert" style="width: 50%; margin-left: 50%" align="right">
+                <p align="right"><b>{{ text.sender }}</b></p>
+                {{ text.text }}
+                <p align="left">{{ text.time|date:"H:i:s M d,Y" }}</p>
+                </div>
+            {% else %}
+                <div class="alert alert-dark" role="alert" style="width: 50%;">
+                <p><b>{{ text.sender }}</b></p>
+                {{ text.text }}
+                <p align="right">{{ text.time|date:"H:i:s M d,Y" }}</p>
+                </div>
+            {% endif %}
+
+    {% endfor%}
+
+    {% else %}
+    <h1>Чтобы начать общение напишите пользователю</h1>
+    {% endif %}
+    <form method="POST">
+      {% csrf_token %}
+      {% for field in form.visible_fields  %}
+        <p>Сообщение: {{ field }}</p>
+      {% endfor %}
+
+      <button type="submit">Отправить сообщение</button>
+    </form>
+
+{% endblock %}

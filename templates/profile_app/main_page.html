@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form class="d-flex" role="search" action="{% url 'user_search' %}" method="GET">
+                    <input class="form-control me-2" type="text" name="q" placeholder="Поиск" aria-label="Поиск" />
+                    <input class="btn btn-outline-success" type="submit" />
+            </form>
+    <h1 style="color: aliceblue">Команда гениев</h1>
+    <div style="text-align: center">
+        <img src="https://sun9-60.userapi.com/s/v1/if1/hbsOKF6pFNnWT3qUhgb66AZiJAsJIbhHjAAmDnDCUaU6sIy8OromaY3TUe6FWg2uR0fIdqj5.jpg?size=604x604&quality=96&type=album" alt="" width="300px" height="300px" style="border-radius: 150px">
+        <h3 style="color: aliceblue">Главный мозг: Данила</h3>
+        <h3 style="color: aliceblue">Креативный директор: Данила</h3>
+        <h3 style="color: aliceblue">Разработчик: Данила</h3>
+        <h3 style="color: aliceblue">Чел который всегда за всех получает по шапке: Данила</h3>
+    </div>
+{% endblock %}

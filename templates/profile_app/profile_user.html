@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3 style="color: aliceblue">Смешарик {{ users.username }} </h3>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-2" style="color: aliceblue">
+    <div class="feature col">
+        <h2>Аватар</h2>
+        <hr>
+        <p>{% if users.profile.photo %}
+            <img src="{{ users.profile.photo.url }}" style="border-radius:50px" alt="" width="250px" height="250px">
+        {% else %}
+            <img src="/static/image/avatar_icon.jpg" style="border-radius:50px" alt="" width="250px" height="250px">
+        {% endif %}</p>
+    </div>
+    <div class="feature col" style="color: aliceblue">
+        <a href="{% url 'chat' users.pk%}">
+                Отрыть сообщения с пользователям
+            </a>
+        <details style="color: aliceblue">
+        <summary><b>Список друзей:</b></summary>
+        {% for friend in friends%}
+            {% if friend.sender == users %}
+            <li>
+            {% if friend.receiver.profile.photo %}
+                <img src="{{ friend.receiver.profile.photo.url }}" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% else %}
+                <img src="/static/image/avatar_icon.jpg" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% endif %}
+            <a href="{% url 'profile_user' friend.receiver.pk%}">
+                {{ friend.receiver }}
+            </a>
+            </li>
+            {% else %}
+            <li>
+            {% if friend.sender.profile.photo %}
+                <img src="{{ friend.sender.profile.photo.url }}" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% else %}
+                <img src="/static/image/avatar_icon.jpg" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% endif %}
+            <a href="{% url 'profile_user' friend.sender.pk%}">
+                {{ friend.sender }}
+            </a>
+            </li>
+             {% endif %}
+        {% endfor %}
+    </details>
+
+    <details>
+        <summary><b>Подписки:</b></summary>
+        {% for sub in subs%}
+        <li>
+            {% if sub.receiver.profile.photo %}
+                <img src="{{ sub.receiver.profile.photo.url }}" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% else %}
+                <img src="/static/image/avatar_icon.jpg" style="border-radius:10px" alt="" width="50px" height="50px">
+            {% endif %}
+            <a href="{% url 'profile_user' sub.receiver.pk%}">
+                {{ sub.receiver }}
+            </a>
+        </li>
+        {% endfor %}
+    </details>
+
+    {% if is_friend %}
+    <div class="alert alert-success" role="alert">
+        Вы уже друзья!
+    </div>
+    <a href="{% url 'friendship' action='remove' pk=users.pk %}">
+        <button type="button" class="btn btn-danger">Удалить из друзей</button>
+    </a>
+
+    {% elif is_subscribed %}
+    <div class="alert alert-info" role="alert">
+        На тебя данный пользователь подписан
+    </div>
+
+    {% elif is_follower %}
+    <div class="alert alert-info" role="alert">
+        Ты подписан на его !
+    </div>
+    <a href="{% url 'friendship' action='unsub' pk=users.pk %}">
+        <button type="button" class="btn btn-danger">Отписка</button>
+    </a>
+
+    {% else %}
+    <a href="{% url 'friendship' action='add' pk=users.pk %}">
+        <button type="button" class="btn btn-success">Добавить в друзья </button>
+    </a>
+    <a href="{% url 'friendship' action='sub' pk=users.pk %}">
+        <button type="button" class="btn btn-primary">Подписаться</button>
+    </a>
+    {% endif %}
+    </div>
+</div>
+
+
+<p><b style="color: aliceblue">Имя: {{users.first_name}}</b></p>
+
+<div class="col-md" style="color: aliceblue">
+    <h2>Мэмы пользователя:</h2>
+    <hr>
+    {% for user in users.posts.all %}
+    <div class="card-body">
+        <div class="media">
+            {% for image in user.post_images.all %}
+                {% if image.image %}
+                    <img src="{{ image.image.url }}" class="mr-3" alt="" width="250px" height="250px" >
+                {% endif %}
+            {% endfor %}
+            <div class="media-body">
+                <h5 class="card-title">{{ user.title}}</h5>
+                <p class="card-text">{{ user.text}}.</p>
+                <p align="right">Теги:
+                {% for tag in user.tag.all %}
+                    {{ tag.tag }},
+                {% endfor%}</p>
+                 <a href="{{ user.get_absolute_url }}" class="btn btn-primary">Открыть пост...</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        Пост создан: {{ user.created_time|date:"d M Y H:i" }}
+    </div>
+</div>
+<hr>
+{% endfor %}
+
+{% endblock %}

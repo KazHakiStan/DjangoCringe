@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<p>
+    <a href="{% url 'add_post'%}">
+        <button type="button" class="btn btn-dark">Добавить пост</button>
+    </a>
+</p>
+
+    {% if information %}
+    <h2>{{ information }}</h2>
+
+    {% else %}
+    {% include 'publication_app/posts.html' %}
+    {% endif %}
+
+{% else %}
+    <h3>Для просмотра данного раздела нужно авторизоваться или зарегистрировать!</h3>
+    <p><a href="{% url 'login' %}">Авторизация</a></p>
+    <p><a href="{% url 'register' %}">Регистрация</a></p>
+{% endif %}
+
+
+{% endblock %}

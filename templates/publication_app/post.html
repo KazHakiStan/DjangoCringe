@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="alert alert-secondary">
+    <div class="media-body" style="color: black">
+        <h2>Мэм: {{ posts.title }}</h2>
+        <div class="article-metadata" style="display: inline-block">
+            <div class="author" style="display: inline-block">
+                <img class="rounded-circle article-img" src="{{ posts.user.profile.photo.url }}" alt="" width="150px" height="150px"><br>
+                <a class="mr-2" style="color: black">{{ posts.user.username }}</a>
+                <small class="text-muted">{{ posts.created_time|date:'F d, Y' }}</small>
+            </div>
+        </div>
+        <div class="post-body" style="display: inline-block; ">
+            <div class="images" style="display: inline-block; margin-left: 200px">
+                {% for image in posts.post_images.all %}
+                    {% if image.image %}
+                        <img src="{{ image.image.url }}" alt="" width="300px" height="300px"><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="text" style="display: inline-block">
+                <p class="article-content">{{ posts.text }}</p>
+            </div>
+        </div>
+        <div class="etc">
+            <p>Теги:
+                {% for tag in posts.tag.all %}
+                    {{ tag.tag }},
+                {% endfor %}</p>
+            {% if posts.user_id == user.pk %}
+                <p align="right">
+                    <a href="{% url 'post_red' posts.pk %}"><button type="button" class="btn btn-warning">Редактировать пост</button></a>
+                    <a href="{% url 'post_del' posts.pk %}"><button type="button" class="btn btn-danger">Удалить пост</button></a>
+                </p>
+            {% endif %}
+            <p>Комментарии:</p>
+            {% for comment in posts.post_comment.all %}
+                {% if comment.user.profile.photo %}
+                    <img src="{{ comment.user.profile.photo.url }}" style="border-radius:15px" alt="" width="30px" height="30px" >
+                {% endif %}
+                <b>{{ comment.user }}</b>: {{ comment }}<br>
+                <br>
+            {% endfor %}
+            <form method="post">
+                <div class="form-floating">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Добавить комментарий">
+                </div>
+            </form>
+        </div>
+    </div>
+</article>
+{% endblock %}

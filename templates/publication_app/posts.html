@@ -1,0 +1,55 @@
+{% block content %}
+    {% if page_obj %}
+        {% for post in page_obj %}
+            <article class="alert alert-secondary">
+
+                <div class="media-body">
+
+                    <div class="article-metadata">
+                        <div class="author" style="display: inline-block">
+                            <img class="rounded-circle article-img" src="{{ post.user.profile.photo.url }}" alt="" width="150px" height="150px"><br>
+                            <a class="mr-2" href="" style="color: black">{{ post.user }}</a>
+                            <small class="text-muted">{{ post.created_time|date:"F d, Y" }}</small>
+                        </div>
+                        <div class="title" style="display: inline-block">
+                            <h3><a class="article-title" href="{{ post.get_absolute_url }}" style="color: black;">{{ post.title }}</a></h3>
+                        </div>
+                    </div><br>
+{#                    <div class="post-body">#}
+{#                        <div class="images" style="display: inline-block">#}
+{#                        {% for image in post.post_images.all %}#}
+{#                            {% if image.image %}#}
+{#                                <img src="{{ image.image.url }}" alt="" width="300px" height="300px"><br>#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
+{#                        </div>#}
+{#                        <div class="text" style="display: inline-block">#}
+{#                            <p class="article-content">{{ post.text }}</p>#}
+{#                        </div>#}
+{#                        <p class="tags">#}
+{#                            Тэги:#}
+{#                        </p><br>#}
+{#                    </div>#}
+                </div>
+            </article>
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">Первая</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                {% endif %}
+
+                <span class="current" style="color: aliceblue">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Следущая</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Последнаяя</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>Нет постов!</p>
+    {% endif %}
+{% endblock %}

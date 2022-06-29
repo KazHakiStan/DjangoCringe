@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" style="color: aliceblue">
+    {% csrf_token %}
+    {{ form.as_p }}
+<p><input type="submit" value="Добавить пост"></p>
+</form>
+<a style="color: aliceblue" href="{% url 'posts' %}"}>Отмена добавление поста</a>
+{% endblock %}

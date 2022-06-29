@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="color: aliceblue">Регистрация пользователя</h1>
+<form method="POST" style="color: aliceblue">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div style="background: #c0c0c0; color:#ff0000">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Регистрация</button>
+</form>
+{% endblock %}

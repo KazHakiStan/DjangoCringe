@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if not search_list  %}
+<h1>Пользователя с такими имение не найден </h1>
+<h3>Попробуйте еще </h3>
+{% endif %}
+
+<ul>
+{% for users in search_list %}
+    <li>
+        <p>
+        {% if users.profile.photo %}
+            <img src="{{ users.profile.photo.url }}" style="border-radius:10px" alt="" width="50px" height="50px">
+        {% else %}
+            <img src="/static/image/avatar_icon.jpg" style="border-radius:10px" alt="" width="50px" height="50px">
+        {% endif %}
+        {{ users.username }}
+        </p>
+        <a href="{% url 'profile_user' users.pk%}">
+            <button type="button" class="btn btn-secondary btn-sm">Перейти к профилю</button>
+        </a>
+    </li>
+    <hr>
+{% endfor %}
+</ul>
+
+{% endblock %}

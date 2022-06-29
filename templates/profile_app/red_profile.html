@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="color: aliceblue">Редактирование данных профиля {{ user.username }}</h1>
+<p style="color: aliceblue">Ваши данные:</p>
+<form method="post" enctype="multipart/form-data" style="color: aliceblue">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+        <p>Аватар:</p>
+    {% if request.user.profile.photo %}
+        <img src="{{ request.user.profile.photo.url }}" alt="" width="250px" height="250px">
+    {% else %}
+        <img src="/static/image/avatar_icon.jpg" alt="" width="250px" height="250px">
+    {% endif %}
+    <p><input type="submit" value="Save changes"></p>
+</form>
+<a href="{% url 'profile' %}" style="color: aliceblue">Отмена редактирования</a>
+{% endblock %}

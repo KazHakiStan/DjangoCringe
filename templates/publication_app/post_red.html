@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="color: aliceblue">Редактирование поста</h1>
+<form method="POST" enctype="multipart/form-data" style="color: aliceblue">
+    {% csrf_token %}
+    {{ form.as_p}}
+    {{image.management_form}}
+    {{ image.as_p}}
+<p><input type="submit" value="Добавить пост"></p>
+</form>
+<p><a href="{% url 'posts' %}"}>Вернутся обратно</a></p>
+{% endblock %}
